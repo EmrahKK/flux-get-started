@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: kube-echo
-        image: ${APP_IMAGE_TAG}    
+        image: emrahkk/kube-echo:latest
         imagePullPolicy: IfNotPresent              
         ports:
         - containerPort: 3000
