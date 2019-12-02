@@ -1,0 +1,36 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: kube-echo
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kube-echo
+    spec:
+      containers:
+      - name: kube-echo
+        image: ${APP_IMAGE_TAG}    
+        imagePullPolicy: IfNotPresent              
+        ports:
+        - containerPort: 3000
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3000                        
+          initialDelaySeconds: 15
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 3000
+          failureThreshold: 30
+          periodSeconds: 10      
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 128Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
