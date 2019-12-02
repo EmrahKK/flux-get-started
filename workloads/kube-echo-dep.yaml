@@ -1,32 +1,36 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kube-echo
-spec:
-  replicas: 1
+  name: kubeecho  
+  labels:
+    app: kubeecho  
+spec:  
+  selector:
+    matchLabels:
+      app: kubeecho
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
       labels:
-        app: kube-echo
+        app: kubeecho
     spec:
       containers:
-      - name: kube-echo
+      - name: kubeecho
         image: emrahkk/kube-echo:latest
-        imagePullPolicy: IfNotPresent              
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
+          name: http
+          protocol: TCP        
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 3000                        
-          initialDelaySeconds: 15
-          periodSeconds: 15
+            port: 3000
         readinessProbe:
           httpGet:
-            path: /readiness
+            path: /readyz
             port: 3000
-          failureThreshold: 30
-          periodSeconds: 10      
         resources:
           limits:
             cpu: 1000m
