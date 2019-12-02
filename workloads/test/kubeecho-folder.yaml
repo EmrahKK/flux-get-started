@@ -9,9 +9,7 @@ spec:
     matchLabels:
       app: kubeecho-folder
   template:
-    metadata:
-      annotations:
-        prometheus.io/scrape: "true"
+    metadata:    
       labels:
         app: kubeecho-folder
     spec:
